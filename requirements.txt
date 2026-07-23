@@ -1,0 +1,2 @@
+# Aucune dépendance externe : le script utilise uniquement la bibliothèque
+# standard de Python (urllib, json).

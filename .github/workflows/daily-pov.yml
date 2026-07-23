@@ -1,0 +1,30 @@
+name: Daily POV Business Video (FR)
+
+on:
+  schedule:
+    # ⏰ Cron en UTC. 07:00 UTC = 08:00 en UTC+1 (WAT / Paris en hiver).
+    # Règle: heure locale voulue MOINS ton décalage UTC.
+    #   - UTC+1 (WAT / Cameroun, Paris hiver) -> "0 7 * * *"
+    #   - UTC+2 (Paris été)                    -> "0 6 * * *"
+    #   - UTC+0                                 -> "0 8 * * *"
+    - cron: "0 7 * * *"
+  workflow_dispatch: {}
+
+jobs:
+  send-pack:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Generate and send daily pack
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python scripts/generate_and_send.py
