@@ -1,9 +1,11 @@
 name: Daily POV Business Video (FR)
 
 on:
-    schedule:
-    - cron: "0 0 * * *"   # 08:00 Chine
-    - cron: "0 8 * * *"   # 16:00 Chine
+  schedule:
+    - cron: "0 0 * * *"   # 08:00 en Chine (matin)
+    - cron: "0 8 * * *"   # 16:00 en Chine (apres-midi)
+  workflow_dispatch: {}
+
 jobs:
   send-pack:
     runs-on: ubuntu-latest
@@ -20,7 +22,6 @@ jobs:
         run: pip install -r requirements.txt
       - name: Generate and send daily pack
         env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: python scripts/generate_and_send.py
