@@ -460,8 +460,9 @@ def check_env() -> None:
 
 
 def pick_entry() -> dict:
-    # Rotation deterministe: change chaque jour et parcourt toute la banque.
-    idx = datetime.date.today().toordinal() % len(BANK)
+    # Rotation deterministe: 2 idees differentes par jour (matin / apres-midi).
+    slot = 1 if os.environ.get("RUN_SLOT", "").strip().lower() == "afternoon" else 0
+    idx = (datetime.date.today().toordinal() * 2 + slot) % len(BANK)
     return BANK[idx]
 
 
