@@ -2,15 +2,8 @@
 """
 Envoie chaque jour sur Telegram UNE idee de video POV (en francais) sur une
 opportunite business (dropshipping / side hustle), avec un script pret a lire.
-
-100% GRATUIT : aucune cle IA, aucun quota. Pioche dans une banque d'idees et
-change chaque jour (rotation deterministe sur la date). Les liens pointent vers
-des recherches/hashtags TikTok & YouTube EN DIRECT -> ils montrent toujours les
-videos virales du moment (jamais de lien mort).
-
-Secrets attendus (variables d'environnement, injectees par GitHub Actions) :
-  TELEGRAM_BOT_TOKEN    -> token du bot Telegram (BotFather)
-  TELEGRAM_CHAT_ID      -> ton chat id Telegram
+100% GRATUIT : aucune cle IA, aucun quota. Rotation deterministe sur la date,
+2 idees differentes par jour (matin / apres-midi via RUN_SLOT).
 """
 
 import os
@@ -24,12 +17,6 @@ TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "").strip()
 TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID", "").strip()
 TELEGRAM_LIMIT = 4096
 
-# ---------------------------------------------------------------------------
-# BANQUE D'IDEES. Chaque entree = une video POV a refaire.
-# Champs: titre, lien (recherche/hashtag EN DIRECT), opp (opportunite, liste),
-#         hook, corps, cta, hashtags, astuce.
-# Pour en ajouter: copie une entree et modifie-la. La rotation s'adapte seule.
-# ---------------------------------------------------------------------------
 BANK = [
     {
         "titre": "Le projecteur galaxie qui transforme une chambre",
@@ -194,12 +181,11 @@ BANK = [
             "Angle confort/outdoor = panier moyen eleve.",
         ],
         "hook": "POV : le produit d'hiver qui se vend 3x son prix.",
-        "corps": "Un gilet qui chauffe en quelques secondes via batterie USB. Parfait pour l'hiver, le sport en exterieur, les gens frileux. 20$ a l'achat, 59$ a la revente. Montre les zones qui chauffent avec une camera thermique si possible.",
+        "corps": "Un gilet qui chauffe en quelques secondes via batterie USB. Parfait pour l'hiver, le sport en exterieur, les gens frileux. 20$ a l'achat, 59$ a la revente. Montre les zones qui chauffent.",
         "cta": "Follow pour le produit gagnant du jour.",
         "hashtags": "#dropshipping #hiver #outdoor #produitgagnant #ecommerce #tiktokmademebuyit",
         "astuce": "Publie ce type de produit AVANT la saison froide pour surfer la demande montante.",
     },
-    # ---------------------- SIDE HUSTLES / ENTREPRENEURIAT ----------------------
     {
         "titre": "Le print-on-demand (t-shirts sans stock)",
         "lien": "https://www.youtube.com/results?search_query=print+on+demand+2026",
@@ -209,7 +195,7 @@ BANK = [
             "Outils gratuits : Canva pour le design, boutique auto.",
         ],
         "hook": "POV : tu vends des t-shirts sans jamais en toucher un seul.",
-        "corps": "Le print-on-demand : tu crees un design sur Canva, tu le mets sur une boutique, et un partenaire imprime + expedie a chaque vente. Tu ne payes que quand tu vends. Ta seule mission : trouver une niche (chats, gym, metiers) et faire du contenu.",
+        "corps": "Le print-on-demand : tu crees un design sur Canva, tu le mets sur une boutique, et un partenaire imprime + expedie a chaque vente. Tu ne payes que quand tu vends. Trouve une niche (chats, gym, metiers) et fais du contenu.",
         "cta": "Abonne-toi, une idee de business par jour.",
         "hashtags": "#printondemand #businessenligne #sidehustle #ecommerce #entrepreneur #revenupassif",
         "astuce": "Attaque une micro-niche precise ('cadeau infirmiere') plutot qu'un theme large : moins de concurrence.",
@@ -237,7 +223,7 @@ BANK = [
             "Plateformes toutes pretes pour vendre.",
         ],
         "hook": "POV : tu crees UN fichier et tu le vends 1000 fois.",
-        "corps": "Les gens payent pour des templates Notion (budget, productivite, planning). Tu en crees un bon, tu le mets en vente, et chaque copie vendue est pur profit. Fais des videos qui montrent le template en action pour attirer les acheteurs.",
+        "corps": "Les gens payent pour des templates Notion (budget, productivite, planning). Tu en crees un bon, tu le mets en vente, et chaque copie vendue est pur profit. Fais des videos qui montrent le template en action.",
         "cta": "Abonne-toi, une idee business par jour.",
         "hashtags": "#notion #produitdigital #sidehustle #revenupassif #businessenligne #productivite",
         "astuce": "Offre un mini-template gratuit pour capter des abonnes, puis vends la version complete.",
@@ -268,7 +254,7 @@ BANK = [
         "corps": "Le UGC, c'est creer des videos authentiques 'type client' que les marques utilisent en pub. Pas besoin d'etre connu. Tu montes un petit portfolio, tu demarches des marques, et tu factures a la video. Ton telephone suffit.",
         "cta": "Abonne-toi, une idee business chaque jour.",
         "hashtags": "#ugc #ugccreator #sidehustle #freelance #businessenligne #createurdecontenu",
-        "astuce": "Ton portfolio = 3 videos de produits que tu possedes deja. Pas besoin d'attendre un client pour commencer.",
+        "astuce": "Ton portfolio = 3 videos de produits que tu possedes deja. Commence sans attendre un client.",
     },
     {
         "titre": "Les produits digitaux (ebooks / guides)",
@@ -279,7 +265,7 @@ BANK = [
             "Livraison automatique, zero logistique.",
         ],
         "hook": "POV : ton savoir vaut de l'argent, meme pendant que tu dors.",
-        "corps": "Transforme une competence (fitness, finance, langue, montage) en guide PDF ou mini-formation. Tu le crees une fois et chaque vente est automatique. Fais des videos 'valeur' sur le sujet, puis vends le guide complet a ceux qui en veulent plus.",
+        "corps": "Transforme une competence (fitness, finance, langue, montage) en guide PDF ou mini-formation. Tu le crees une fois et chaque vente est automatique. Fais des videos 'valeur', puis vends le guide complet a ceux qui en veulent plus.",
         "cta": "Follow pour une idee de revenu par jour.",
         "hashtags": "#produitdigital #ebook #revenupassif #sidehustle #businessenligne #entrepreneur",
         "astuce": "Poste 3 conseils gratuits en video, puis 'la methode complete est dans le guide'. Simple et efficace.",
@@ -293,7 +279,7 @@ BANK = [
             "Combine parfaitement avec du contenu 'review'.",
         ],
         "hook": "POV : tu gagnes une commission sans creer aucun produit.",
-        "corps": "L'affiliation : tu recommandes un produit avec ton lien, et tu touches une commission a chaque vente. Fais des videos 'top 5 outils' ou 'produits que j'utilise' avec tes liens. Aucun stock, aucun SAV : tu es juste le pont entre le produit et l'acheteur.",
+        "corps": "L'affiliation : tu recommandes un produit avec ton lien, et tu touches une commission a chaque vente. Fais des videos 'top 5 outils' ou 'produits que j'utilise' avec tes liens. Aucun stock, aucun SAV.",
         "cta": "Abonne-toi, une idee business chaque jour.",
         "hashtags": "#affiliation #affiliatemarketing #revenupassif #sidehustle #businessenligne #entrepreneur",
         "astuce": "Recommande UNIQUEMENT ce que tu utilises vraiment : la confiance = le taux de conversion.",
@@ -307,7 +293,7 @@ BANK = [
             "Boutique montable en une journee.",
         ],
         "hook": "POV : tu testes 3 produits cette semaine, un peut exploser.",
-        "corps": "Le dropshipping en 2026 : tu montes une boutique, tu testes des produits avec du contenu organique (TikTok gratuit) avant de mettre de la pub. Tu gardes ceux qui marchent, tu coupes le reste. La discipline > la chance : teste vite, coupe vite.",
+        "corps": "Le dropshipping en 2026 : tu montes une boutique, tu testes des produits avec du contenu organique (TikTok gratuit) avant de mettre de la pub. Tu gardes ceux qui marchent, tu coupes le reste. Teste vite, coupe vite.",
         "cta": "Follow pour un produit/idee chaque jour.",
         "hashtags": "#dropshipping #ecommerce #shopify #sidehustle #businessenligne #entrepreneur",
         "astuce": "Teste en organique (video gratuite) avant de payer de la pub. Tu economises et tu valides la demande.",
@@ -321,7 +307,7 @@ BANK = [
             "Cree sur Canva (gratuit), vends en boucle.",
         ],
         "hook": "POV : tu vends des designs Canva pendant ton sommeil.",
-        "corps": "Beaucoup de gens veulent de beaux visuels mais ne savent pas les faire. Tu crees des packs de templates (posts Insta, CV, presentations) sur Canva et tu les vends. Une creation, des ventes illimitees. Montre tes templates en action pour vendre.",
+        "corps": "Beaucoup de gens veulent de beaux visuels mais ne savent pas les faire. Tu crees des packs de templates (posts Insta, CV, presentations) sur Canva et tu les vends. Une creation, des ventes illimitees.",
         "cta": "Abonne-toi, une idee de revenu par jour.",
         "hashtags": "#canva #produitdigital #sidehustle #revenupassif #businessenligne #design",
         "astuce": "Vends des PACKS (ex: 30 templates Insta) plutot qu'a l'unite : panier plus eleve.",
@@ -335,7 +321,7 @@ BANK = [
             "Marche seconde main en pleine explosion.",
         ],
         "hook": "POV : tu transformes 5$ de friperie en 40$.",
-        "corps": "Le flipping : tu deniches des pieces sous-cotees (vetements de marque, objets) et tu les revends en ligne au vrai prix. Faible investissement, apprentissage rapide de ce qui se vend. Documente tes trouvailles en video : le 'thrift haul' cartonne.",
+        "corps": "Le flipping : tu deniches des pieces sous-cotees (vetements de marque, objets) et tu les revends en ligne au vrai prix. Faible investissement, apprentissage rapide de ce qui se vend. Documente tes trouvailles : le 'thrift haul' cartonne.",
         "cta": "Follow pour une idee business chaque jour.",
         "hashtags": "#reselling #flipping #secondemain #sidehustle #businessenligne #thrift",
         "astuce": "Filme le 'combien je l'ai paye vs combien je l'ai vendu' : le contraste chiffre accroche.",
@@ -349,7 +335,7 @@ BANK = [
             "Zero produit, tu vends ton temps + tes competences.",
         ],
         "hook": "POV : tu geres l'Insta d'un commerce et tu factures chaque mois.",
-        "corps": "Beaucoup de petits commerces n'ont ni le temps ni l'envie de gerer leurs reseaux. Tu proposes un forfait : X posts + reponses aux messages par mois. 2-3 clients = un vrai revenu recurrent. Commence par un commerce local que tu connais.",
+        "corps": "Beaucoup de petits commerces n'ont ni le temps ni l'envie de gerer leurs reseaux. Tu proposes un forfait : X posts + reponses aux messages par mois. 2-3 clients = un vrai revenu recurrent. Commence par un commerce local.",
         "cta": "Abonne-toi, une idee de revenu par jour.",
         "hashtags": "#smma #reseauxsociaux #freelance #sidehustle #businessenligne #entrepreneur",
         "astuce": "Propose le 1er mois a prix reduit pour prouver ta valeur, puis passe au tarif plein.",
@@ -391,7 +377,7 @@ BANK = [
             "Invitations, plannings, stickers, imprimables.",
         ],
         "hook": "POV : tu vends des fichiers sur Etsy sans rien expedier.",
-        "corps": "Sur Etsy, les imprimables (plannings, invitations, art mural) se vendent en telechargement. Tu crees une fois, la plateforme t'amene des acheteurs, la livraison est automatique. Fais du contenu qui montre tes designs pour ramener du trafic externe.",
+        "corps": "Sur Etsy, les imprimables (plannings, invitations, art mural) se vendent en telechargement. Tu crees une fois, la plateforme t'amene des acheteurs, la livraison est automatique. Fais du contenu qui montre tes designs.",
         "cta": "Follow pour une idee business chaque jour.",
         "hashtags": "#etsy #produitdigital #imprimable #sidehustle #revenupassif #businessenligne",
         "astuce": "Vise les evenements (mariage, rentree, fetes) : la demande est saisonniere et forte.",
@@ -405,7 +391,7 @@ BANK = [
             "Outils no-code pour construire les bots.",
         ],
         "hook": "POV : tu installes un chatbot et tu factures 500$.",
-        "corps": "Beaucoup de commerces perdent des clients faute de reponses rapides. Tu montes un chatbot (no-code) qui repond aux questions et prend les reservations. Tu factures l'installation + un abonnement. Un skill tres demande et encore peu concurrentiel.",
+        "corps": "Beaucoup de commerces perdent des clients faute de reponses rapides. Tu montes un chatbot (no-code) qui repond aux questions et prend les reservations. Tu factures l'installation + un abonnement. Un skill tres demande et peu concurrentiel.",
         "cta": "Abonne-toi, une idee de revenu par jour.",
         "hashtags": "#ia #chatbot #automatisation #sidehustle #businessenligne #entrepreneur",
         "astuce": "Cible un secteur precis (restos, salons) : tu reutilises le meme bot et tu vends plus vite.",
@@ -419,7 +405,7 @@ BANK = [
             "L'IA te rend plus rapide = plus de missions.",
         ],
         "hook": "POV : tu proposes un service IA et les commandes tombent.",
-        "corps": "Sur les plateformes freelance, propose un service clair (miniatures, montage court, redaction, traduction) booste a l'IA. Tu livres vite et bien, tu accumules les avis, tu montes tes prix. Le plus dur c'est le 1er client : vise petit prix au debut.",
+        "corps": "Sur les plateformes freelance, propose un service clair (miniatures, montage court, redaction, traduction) booste a l'IA. Tu livres vite et bien, tu accumules les avis, tu montes tes prix. Le plus dur c'est le 1er client.",
         "cta": "Follow pour une idee business chaque jour.",
         "hashtags": "#freelance #ia #sidehustle #fiverr #businessenligne #revenu",
         "astuce": "Une seule offre ultra-claire au depart > 10 services flous. La specialisation attire.",
@@ -433,7 +419,7 @@ BANK = [
             "Base de tout business de createur durable.",
         ],
         "hook": "POV : tes vues ne rapportent rien... tant que tu ne fais pas ca.",
-        "corps": "Les vues ne payent pas les factures. Le systeme : contenu gratuit qui apporte de la valeur -> tu captes des abonnes -> tu leur proposes un produit (guide, service, affiliation). Chaque video doit avoir un but, pas juste chercher le like.",
+        "corps": "Les vues ne payent pas les factures. Le systeme : contenu gratuit qui apporte de la valeur -> tu captes des abonnes -> tu leur proposes un produit (guide, service, affiliation). Chaque video doit avoir un but.",
         "cta": "Abonne-toi, une strategie business par jour.",
         "hashtags": "#createur #businessenligne #sidehustle #monetisation #entrepreneur #strategie",
         "astuce": "Ajoute UN appel a l'action clair par video (commente un mot, clique le lien). Sans ca, zero conversion.",
@@ -441,32 +427,25 @@ BANK = [
 ]
 
 
-def fail(msg: str) -> None:
+def fail(msg):
     print(f"ERREUR: {msg}", file=sys.stderr)
     sys.exit(1)
 
 
-def check_env() -> None:
-    missing = [
-        name
-        for name, val in [
-            ("TELEGRAM_BOT_TOKEN", TELEGRAM_BOT_TOKEN),
-            ("TELEGRAM_CHAT_ID", TELEGRAM_CHAT_ID),
-        ]
-        if not val
-    ]
+def check_env():
+    missing = [n for n, v in [("TELEGRAM_BOT_TOKEN", TELEGRAM_BOT_TOKEN),
+        ("TELEGRAM_CHAT_ID", TELEGRAM_CHAT_ID)] if not v]
     if missing:
         fail("Secrets manquants: " + ", ".join(missing))
 
 
-def pick_entry() -> dict:
-    # Rotation deterministe: 2 idees differentes par jour (matin / apres-midi).
+def pick_entry():
     slot = 1 if os.environ.get("RUN_SLOT", "").strip().lower() == "afternoon" else 0
     idx = (datetime.date.today().toordinal() * 2 + slot) % len(BANK)
     return BANK[idx]
 
 
-def format_pack(e: dict) -> str:
+def format_pack(e):
     opp = "\n".join(f"- {x}" for x in e["opp"])
     return (
         "🎥 LA VIDEO A REFAIRE AUJOURD'HUI\n"
@@ -485,42 +464,35 @@ def format_pack(e: dict) -> str:
     )
 
 
-def http_post_json(url: str, payload: dict, headers: dict, timeout: int = 30) -> dict:
+def http_post_json(url, payload, headers, timeout=30):
     data = json.dumps(payload).encode("utf-8")
     req = urllib.request.Request(url, data=data, headers=headers, method="POST")
     try:
         with urllib.request.urlopen(req, timeout=timeout) as resp:
             return json.loads(resp.read().decode("utf-8"))
     except urllib.error.HTTPError as e:
-        body = e.read().decode("utf-8", errors="replace")
-        fail(f"HTTP {e.code} sur {url}: {body}")
+        fail(f"HTTP {e.code} sur {url}: {e.read().decode('utf-8', errors='replace')}")
     except urllib.error.URLError as e:
         fail(f"Connexion echouee sur {url}: {e}")
     return {}
 
 
-def send_telegram(text: str) -> None:
+def send_telegram(text):
     url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
     headers = {"Content-Type": "application/json"}
     parts = [text[i:i + TELEGRAM_LIMIT] for i in range(0, len(text), TELEGRAM_LIMIT)] or [text]
     for part in parts:
-        payload = {
-            "chat_id": TELEGRAM_CHAT_ID,
-            "text": part,
-            "disable_web_page_preview": True,
-        }
+        payload = {"chat_id": TELEGRAM_CHAT_ID, "text": part, "disable_web_page_preview": True}
         resp = http_post_json(url, payload, headers)
         if not resp.get("ok"):
             fail("Envoi Telegram echoue: " + json.dumps(resp)[:1000])
     print("Pack envoye sur Telegram OK")
 
 
-def main() -> None:
+def main():
     check_env()
     pack = format_pack(pick_entry())
-    print("----- PACK DU JOUR -----")
     print(pack)
-    print("------------------------")
     send_telegram(pack)
 
 
